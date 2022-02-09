@@ -12,7 +12,7 @@ os.environ["PATH"] += os.pathsep + "C:/graphviz/bin"
 
 
 @app.route("/csvtosvg", methods=['POST'])
-def receiveCsv():
+def getCsvToSvg():
     csvFile = request.files["file"]
     svgString = parseCsv(csvFile)
     return jsonify({"status": "OK", "result": str(svgString.decode("utf-8"))})
