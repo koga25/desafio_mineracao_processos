@@ -1,0 +1,4 @@
+<div class="svgContainer rounded-top border border-dark" #elem (mousedown)="startDragging($event, elem)"
+    (mouseup)="stopDragging()" (mouseleave)="stopDragging()" (mousemove)="moveEvent($event, elem)">
+    <ng-content select="[sample]"></ng-content>
+</div>

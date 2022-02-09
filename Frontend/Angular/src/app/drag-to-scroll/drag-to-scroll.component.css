@@ -1,0 +1,13 @@
+.svgContainer{
+    cursor: grab;
+    width: 60vw;
+    height: 60vh;
+    margin: auto;
+    overflow: scroll;
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+}
+
+.svgContainer::-webkit-scrollbar {
+  display: none;
+}

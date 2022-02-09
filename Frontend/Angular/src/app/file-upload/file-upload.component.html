@@ -1,0 +1,20 @@
+<div class="container mt-3">
+    <form (ngSubmit)="onSubmit()">
+        <div class="form-group">
+            <input type="file" name="file" (change)="onFileSelected($event)" [formControl]="fileControl"
+                class="form-control">
+            <small class="text-danger" *ngIf="fileControl.errors?.['forbiddenName']">
+                Use um arquivo .csv
+            </small>
+        </div>
+
+        <button class="btn btn-primary" [disabled]="fileControl.invalid">Submit</button>
+    </form>
+</div>
+<div class="text-center" [style.visibility]="waitForSvg ? 'visible' : 'hidden'">
+    <p>Carregando!</p>
+    <mat-spinner class="center-div" [style.visibility]="waitForSvg ? 'visible' : 'hidden'"></mat-spinner>
+</div>
+<drag-to-scroll>
+    <div tabindex="-1" sample [innerHTML]="svgString"></div>
+</drag-to-scroll>
