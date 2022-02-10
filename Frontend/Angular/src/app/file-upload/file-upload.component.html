@@ -13,8 +13,33 @@
 </div>
 <div class="text-center" [style.visibility]="waitForSvg ? 'visible' : 'hidden'">
     <p>Carregando!</p>
-    <mat-spinner class="center-div" [style.visibility]="waitForSvg ? 'visible' : 'hidden'"></mat-spinner>
+    <mat-spinner class="center-div"></mat-spinner>
 </div>
-<drag-to-scroll>
-    <div tabindex="-1" sample [innerHTML]="svgString"></div>
-</drag-to-scroll>
+<mat-tab-group mat-align-tabs="center">
+    <mat-tab label="csvGraph">
+        <drag-to-scroll>
+            <div tabindex="-1" svgViewer [innerHTML]="svgString"></div>
+        </drag-to-scroll>
+    </mat-tab>
+    <mat-tab label="csvInfo">
+
+        <div class="table-container">
+            <table mat-table [dataSource]="dataSource" class="mat-elevation-z8 customTable">
+                <ng-container matColumnDef="Activity">
+                    <th mat-header-cell *matHeaderCellDef> Activity </th>
+                    <td mat-cell *matCellDef="let element"> {{element.Activity}} </td>
+                </ng-container>
+                <ng-container matColumnDef="TimeElapsed">
+                    <th mat-header-cell *matHeaderCellDef> MeanTime </th>
+                    <td mat-cell *matCellDef="let element"> {{element.TimeElapsed}} </td>
+                </ng-container>
+                <ng-container matColumnDef="Quantity">
+                    <th mat-header-cell *matHeaderCellDef> Quantity </th>
+                    <td mat-cell *matCellDef="let element"> {{element.Quantity}} </td>
+                </ng-container>
+                <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+            </table>
+        </div>
+    </mat-tab>
+</mat-tab-group>

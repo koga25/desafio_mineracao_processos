@@ -10,7 +10,9 @@ import { MatIconModule } from '@angular/material/icon'
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
-import { DragToScrollComponent } from './drag-to-scroll/drag-to-scroll.component'
+import { DragToScrollComponent } from './drag-to-scroll/drag-to-scroll.component';
+import { MatTabsModule } from '@angular/material/tabs'
+import { MatTableModule } from '@angular/material/table';
 
 @NgModule({
   declarations: [
@@ -27,6 +29,8 @@ import { DragToScrollComponent } from './drag-to-scroll/drag-to-scroll.component
     ReactiveFormsModule,
     BrowserAnimationsModule,
     MatProgressSpinnerModule,
+    MatTabsModule,
+    MatTableModule,
   ],
   providers: [],
   bootstrap: [AppComponent]

@@ -1,5 +1,4 @@
 import { Component } from '@angular/core';
-import { RestService } from '../services-components/rest.service';
 import { FormControl, Validators } from '@angular/forms';
 import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 import { HttpClient } from "@angular/common/http";
@@ -14,12 +13,17 @@ export class FileUploadComponent {
 
   svgString: SafeHtml = "";
   waitForSvg: boolean = false;
-  csvToSvgUrl: string = "http://127.0.0.1:5000/csvtosvg"
+  csvToSvgUrl: string = "http://127.0.0.1:5000/csvtosvg";
 
   fileName: string = "";
   fileControl: FormControl;
   formData?: FormData;
-  constructor(private restService: RestService, private sanitizer: DomSanitizer, private http: HttpClient) {
+
+  csvInfoUrl: string = "http://127.0.0.1:5000/csvinfo";
+  displayedColumns: string[] = ["Activity", "TimeElapsed", "Quantity"];
+  dataSource: any;
+
+  constructor(private sanitizer: DomSanitizer, private http: HttpClient) {
     this.fileControl = new FormControl("", [Validators.required]);
   }
 
@@ -44,11 +48,12 @@ export class FileUploadComponent {
     if (this.formData) {
       this.waitForSvg = true;
       await this.getSvg(this.formData);
+      await this.getCsvInfo(this.formData);
     }
   }
 
   async getSvg(formData: FormData) {
-    await this.http.post(this.csvToSvgUrl, formData, { responseType: "json" }).subscribe((response: svgResponse) => {
+    await this.http.post(this.csvToSvgUrl, formData, { responseType: "json" }).subscribe((response: SvgResponse) => {
       if (response.result) {
         this.updateSvg(response.result);
       }
@@ -62,12 +67,49 @@ export class FileUploadComponent {
     console.log(this.svgString);
   }
 
+  async getCsvInfo(formData: FormData) {
+    await this.http.post(this.csvInfoUrl, formData, { responseType: "json" }).subscribe((response: CsvInfo) => {
+      if (response.activities && response.quantityActivities) {
+        //treating json data to use it in MatTable
+        let tempActivities = JSON.parse(response.activities).TimeElapsed;
+        let tempQuantityActivities = JSON.parse(response.quantityActivities);
+        let keys: string[] = Object.keys(tempActivities)
+        let tempJson: any = [];
+        keys.forEach(element => {
+          tempJson.push({
+            "Activity": element,
+            "TimeElapsed": this.msToCustomTime(tempActivities[element]),
+            "Quantity": tempQuantityActivities[element]
+          })
+        });
+        this.dataSource = tempJson;
+      }
+    });
+  }
+
+  msToCustomTime(ms: number) {
+    const days = Math.floor(ms / (24 * 60 * 60 * 1000));
+    const daysms = ms % (24 * 60 * 60 * 1000);
+    const hours = Math.floor(daysms / (60 * 60 * 1000));
+    const hoursms = ms % (60 * 60 * 1000);
+    const minutes = Math.floor(hoursms / (60 * 1000));
+    const minutesms = ms % (60 * 1000);
+    const sec = Math.floor(minutesms / 1000);
+    return days + "D:" + hours + "H:" + minutes + "M:" + sec + "S";
+  }
+
 }
 
 
-class svgResponse {
+class SvgResponse {
   result?: string;
   status?: string;
+}
+
+class CsvInfo {
+  status?: string;
+  activities?: string;
+  quantityActivities?: string;
 }
 
 
