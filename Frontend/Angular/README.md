@@ -8,9 +8,9 @@ Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app w
 
 ## Libraries necessary
 
-@angular/core
-@angular/common
-@angular/material
-@angular/platform-browser
-@angular/platform-browser/animations
-@angular/forms
+* @angular/core
+* @angular/common
+* @angular/material
+* @angular/platform-browser
+* @angular/platform-browser/animations
+* @angular/forms
